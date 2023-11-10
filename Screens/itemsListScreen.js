@@ -9,12 +9,15 @@ import {
   TouchableOpacity,
   TextInput, // Add TextInput for search input
   StyleSheet,
+  StatusBar,
+  Pressable,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItem } from "../Redux/reducers";
 import ItemForm from "../components/ItemsForm";
 import Modal from "react-native-modal";
 import home from "../assets/home.jpg";
+import { ScrollView } from "react-native";
 
 function ItemListScreen() {
   const shoppingList = useSelector((state) => state);
@@ -42,30 +45,264 @@ function ItemListScreen() {
   );
 
   return (
-    <SafeAreaView style={{ alignItems: "center" }}>
-      <Text style={{ fontSize: 30, fontWeight: "bold", marginVertical: 10 }}>
-        Shopping List
-      </Text>
-
-      {/* Add the search input field */}
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search products..."
-        value={searchTerm}
-        onChangeText={(text) => setSearchTerm(text)}
+    <SafeAreaView
+      style={{
+        // alignItems: "center",
+        flex: 1,
+      }}
+    >
+      <StatusBar
+        barStyle={"light-content"}
+        translucent={false}
+        backgroundColor="black"
       />
 
-      <Image
-        source={home}
+      <View
         style={{
-          height: 300,
-          width: "100%",
-          marginVertical: 20,
-          alignSelf: "center",
+          // flex: 1,
+          height: 120,
+          backgroundColor: "black",
+          // justifyContent: "center",
+          alignItems: "center",
+          // elevation: 5,
         }}
-      />
+      >
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "whitesmoke",
+              borderRadius: 100,
+              borderWidth: 5,
+              borderColor: "#2F2F2F",
+            }}
+          >
+            <Image
+              source={require("../assets/logo.png")}
+              style={{ width: 45, height: 45 }}
+            />
+          </View>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search products..."
+            value={searchTerm}
+            onChangeText={(text) => setSearchTerm(text)}
+          />
+        </View>
+      </View>
 
-      <TouchableOpacity
+      <View
+        style={{
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          flexDirection: "row",
+          backgroundColor: "white",
+          // flex: 1,
+        }}
+      >
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <View
+            style={{
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              marginRight: 12,
+              borderRadius: 10,
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Text>Pill</Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              marginRight: 12,
+              borderRadius: 10,
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Text>Yellow</Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              marginRight: 12,
+              borderRadius: 10,
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Text>Tag</Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              marginRight: 12,
+              borderRadius: 10,
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Text>Fruits</Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              marginRight: 12,
+              borderRadius: 10,
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Text>Vegetables</Text>
+          </View>
+        </ScrollView>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          paddingHorizontal: 10,
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 100,
+              backgroundColor: "whitesmoke",
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              marginBottom: 5,
+              borderRadius: 16,
+              // elevation: 20,
+            }}
+          >
+            <Text>RGrf</Text>
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+{
+  /* <TouchableOpacity
         title="Create Shopping List"
         onPress={toggleModal}
         style={{
@@ -74,14 +311,15 @@ function ItemListScreen() {
           width: "80%",
           borderRadius: 10,
           marginVertical: 10,
-        }}>
+        }}
+      >
         <Text style={{ color: "#fff", textAlign: "center", fontSize: 26 }}>
           Create list{" "}
         </Text>
       </TouchableOpacity>
 
       <FlatList
-        data={filteredList} 
+        data={filteredList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
@@ -92,7 +330,10 @@ function ItemListScreen() {
                 <Text>Quantity: {item.quantity}</Text>
                 <Text>Price: R{item.price.toFixed(2)}</Text>
               </View>
-              <Button title="Remove" onPress={() => handleRemoveItem(item.id)} />
+              <Button
+                title="Remove"
+                onPress={() => handleRemoveItem(item.id)}
+              />
             </View>
           </View>
         )}
@@ -105,9 +346,7 @@ function ItemListScreen() {
 
       <Modal isVisible={isModalVisible}>
         <ItemForm toggleModal={toggleModal} image={home} />
-      </Modal>
-    </SafeAreaView>
-  );
+      </Modal> */
 }
 
 const styles = StyleSheet.create({
@@ -129,12 +368,13 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 40,
-    width: "80%",
+    width: 200,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
-    paddingLeft: 10,
-    margin: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "whitesmoke",
+    // margin: 10,
   },
 });
 

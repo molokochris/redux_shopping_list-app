@@ -101,11 +101,13 @@ const RegisterScreen = ({ navigation }) => {
             backgroundColor: "yellow",
           }}
         > */}
-        <Image
-          style={{ width: 35, height: 35 }}
-          source={require("../assets/back.png")}
-          onPress={() => navigation.goBack()}
-        />
+
+        <Pressable onPress={() => navigation.push("Login")}>
+          <Image
+            style={{ width: 35, height: 35 }}
+            source={require("../assets/back.png")}
+          />
+        </Pressable>
         <Text
           style={{
             color: "whitesmoke",

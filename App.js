@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
@@ -16,25 +16,30 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins: require("./assets/fonts/poppins.ttf"),
   });
-
-  // if (!fontsLoaded) {
-  //   return <Text>Loading...</Text>;
-  // }
+  // const [initialRoute, setInitialRoute] = useState("Login");
+  let loggedIn = false;
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
+        <Stack.Navigator initialRouteName={"Home"}>
+          {/* <Stack.Screen
             name="Login"
-            component={LoginScreen}
+            component={<LoginScreen loggedIn={loggedIn} />}
             options={{ headerShown: false }}
-          />
+          /> */}
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
+            {(prop) => <LoginScreen {...prop} loggedIn={loggedIn} />}
+          </Stack.Screen>
           <Stack.Screen
             name="Register"
             component={registerScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Home" component={ItemsListScreen} />
+          <Stack.Screen
+            name="Home"
+            component={ItemsListScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

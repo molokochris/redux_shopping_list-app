@@ -35,19 +35,23 @@ const loadFonts = async () => {
   await Font.loadAsync(fonts);
 };
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, loggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const auth = getAuth(FirebaseApp); // Initialize the auth instance
 
+  let isLoggedIn = loggedIn;
+
   useEffect(() => {
     loadFonts();
+    // console.log(initialRoute);
   }, []);
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // Successfully logged in
+      isLoggedIn = true;
       navigation.navigate("Home"); // Navigate to the "home" page
     } catch (error) {
       console.log("Login Error:", error);
