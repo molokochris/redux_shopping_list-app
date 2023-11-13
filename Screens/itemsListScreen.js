@@ -18,6 +18,8 @@ import ItemForm from "../components/ItemsForm";
 import Modal from "react-native-modal";
 import home from "../assets/home.jpg";
 import { ScrollView } from "react-native";
+import { Icon } from "@rneui/themed";
+import { PanResponder } from "react-native";
 
 function ItemListScreen() {
   const shoppingList = useSelector((state) => state);
@@ -44,6 +46,8 @@ function ItemListScreen() {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [swipedItemId, setSwipedItemId] = useState(null);
+
   return (
     <SafeAreaView
       style={{
@@ -52,16 +56,15 @@ function ItemListScreen() {
       }}
     >
       <StatusBar
-        barStyle={"light-content"}
+        barStyle={"dark-content"}
         translucent={false}
-        backgroundColor="black"
+        backgroundColor="white"
       />
-
       <View
         style={{
           // flex: 1,
-          height: 120,
-          backgroundColor: "black",
+          height: 60,
+          backgroundColor: "white",
           // justifyContent: "center",
           alignItems: "center",
           // elevation: 5,
@@ -76,10 +79,11 @@ function ItemListScreen() {
               height: 50,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "whitesmoke",
+              // backgroundColor: "whitesmoke",
               borderRadius: 100,
-              borderWidth: 5,
-              borderColor: "#2F2F2F",
+              // borderWidth: 5,
+              // borderColor: "#2F2F2F",
+              // borderColor: "whitesmoke",
             }}
           >
             <Image
@@ -88,16 +92,15 @@ function ItemListScreen() {
             />
           </View>
         </View>
-        <View style={{ flex: 1 }}>
+        {/* <View style={{ flex: 1 }}>
           <TextInput
             style={styles.searchInput}
             placeholder="Search products..."
             value={searchTerm}
             onChangeText={(text) => setSearchTerm(text)}
           />
-        </View>
+        </View> */}
       </View>
-
       <View
         style={{
           paddingVertical: 8,
@@ -179,123 +182,158 @@ function ItemListScreen() {
         style={{
           flex: 1,
           backgroundColor: "white",
-          paddingHorizontal: 10,
+          paddingHorizontal: 5,
         }}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+        {/* <View
+          style={{
+            width: "100%",
+            height: 80,
+            // backgroundColor: "whitesmoke",
+            padding: 5,
+            marginBottom: 10,
+            borderRadius: 8,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <View
             style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
+              width: "20%",
+              height: "100%",
+              // backgroundColor: "tomato",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Text>RGrf</Text>
+            <Text>Image</Text>
           </View>
           <View
             style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
+              width: "60%",
+              height: "100%",
+              // backgroundColor: "yellow",
+              padding: 5,
+              justifyContent: "center",
+              // alignItems: "center",
             }}
           >
-            <Text>RGrf</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>R Price</Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>Item</Text>
+            <Text style={{ color: "grey", fontSize: 13, marginTop: 2 }}>
+              #/UnitOfMeasure
+            </Text>
           </View>
           <View
             style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
+              width: "20%",
+              height: "100%",
+              // backgroundColor: "tomato",
+
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Text>RGrf</Text>
+            <Text style={{ fontSize: 18 }}>qty</Text>
           </View>
-          <View
-            style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
-            }}
-          >
-            <Text>RGrf</Text>
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
-            }}
-          >
-            <Text>RGrf</Text>
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
-            }}
-          >
-            <Text>RGrf</Text>
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
-            }}
-          >
-            <Text>RGrf</Text>
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 100,
-              backgroundColor: "whitesmoke",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginBottom: 5,
-              borderRadius: 16,
-              // elevation: 20,
-            }}
-          >
-            <Text>RGrf</Text>
-          </View>
-        </ScrollView>
+        </View> */}
+        <FlatList
+          data={filteredList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            // <View>
+            //   <View style={styles.listItemContainer}>
+            //     <Image source={{ uri: item.image }} style={styles.image} />
+            //     <View style={styles.textContainer}>
+            //       <Text>{item.name}</Text>
+            //       <Text>Quantity: {item.quantity}</Text>
+            //       <Text>Price: R{item.price.toFixed(2)}</Text>
+            //     </View>
+            //     <Button
+            //       title="Remove"
+            //       onPress={() => handleRemoveItem(item.id)}
+            //     />
+            //   </View>
+            // </View>
+            <View
+              style={{
+                width: "100%",
+                height: 80,
+                backgroundColor: "whitesmoke",
+                padding: 5,
+                marginBottom: 10,
+                borderRadius: 8,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  width: "20%",
+                  height: "100%",
+                  // backgroundColor: "tomato",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>Image</Text>
+              </View>
+              <View
+                style={{
+                  width: "60%",
+                  height: "100%",
+                  // backgroundColor: "yellow",
+                  padding: 5,
+                  justifyContent: "center",
+                  // alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                  R {item.price.toFixed(2)}
+                </Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                  {item.name}
+                </Text>
+                <Text style={{ color: "grey", fontSize: 13, marginTop: 2 }}>
+                  #/UnitOfMeasure
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: "20%",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 18 }}>{item.quantity}</Text>
+              </View>
+            </View>
+          )}
+        />
+        {/* </ScrollView> */}
+        <Pressable
+          onPress={toggleModal}
+          style={{
+            width: 60,
+            height: 60,
+            backgroundColor: "tomato",
+            position: "absolute",
+            bottom: 10,
+            right: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 100,
+          }}
+        >
+          <Icon name="add" color="whitesmoke" />
+        </Pressable>
+        <Modal isVisible={isModalVisible}>
+          <ItemForm toggleModal={toggleModal} />
+        </Modal>
       </View>
     </SafeAreaView>
   );
