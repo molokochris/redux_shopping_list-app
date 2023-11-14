@@ -11,6 +11,7 @@ import {
   StyleSheet,
   StatusBar,
   Pressable,
+  ImageBackground,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItem } from "../Redux/reducers";
@@ -19,7 +20,8 @@ import Modal from "react-native-modal";
 import home from "../assets/home.jpg";
 import { ScrollView } from "react-native";
 import { Icon } from "@rneui/themed";
-import { PanResponder } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+// import Animated from "react-native-reanimated";
 
 function ItemListScreen() {
   const shoppingList = useSelector((state) => state);
@@ -34,7 +36,7 @@ function ItemListScreen() {
   const handleRemoveItem = (itemId) => {
     dispatch(removeItem(itemId));
   };
-
+  console.log(shoppingList);
   // Calculate the total cost by multiplying price with quantity for each item
   const totalCost = shoppingList.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -47,6 +49,35 @@ function ItemListScreen() {
   );
 
   const [swipedItemId, setSwipedItemId] = useState(null);
+
+  const RightActions = (progress, dragX) => {
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [0.7, 0],
+    });
+    return (
+      <Pressable
+        style={{
+          width: "100%",
+          height: 80,
+          backgroundColor: "tomato",
+          paddingVertical: 5,
+          paddingHorizontal: 15,
+          marginBottom: 10,
+          borderRadius: 8,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+        onPress={(item) => handleRemoveItem(item.id)}
+      >
+        {/* <Animated.Text style={{ transform: [{ scale }] }}>
+          Delete
+        </Animated.Text> */}
+        <Icon name="delete" color="whitesmoke" />
+      </Pressable>
+    );
+  };
 
   return (
     <SafeAreaView
@@ -239,88 +270,154 @@ function ItemListScreen() {
             <Text style={{ fontSize: 18 }}>qty</Text>
           </View>
         </View> */}
-        <FlatList
-          data={filteredList}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            // <View>
-            //   <View style={styles.listItemContainer}>
-            //     <Image source={{ uri: item.image }} style={styles.image} />
-            //     <View style={styles.textContainer}>
-            //       <Text>{item.name}</Text>
-            //       <Text>Quantity: {item.quantity}</Text>
-            //       <Text>Price: R{item.price.toFixed(2)}</Text>
-            //     </View>
-            //     <Button
-            //       title="Remove"
-            //       onPress={() => handleRemoveItem(item.id)}
-            //     />
-            //   </View>
-            // </View>
-            <View
-              style={{
-                width: "100%",
-                height: 80,
-                backgroundColor: "whitesmoke",
-                padding: 5,
-                marginBottom: 10,
-                borderRadius: 8,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  width: "20%",
-                  height: "100%",
-                  // backgroundColor: "tomato",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text>Image</Text>
-              </View>
-              <View
-                style={{
-                  width: "60%",
-                  height: "100%",
-                  // backgroundColor: "yellow",
-                  padding: 5,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                  R {item.price.toFixed(2)}
-                </Text>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                  {item.name}
-                </Text>
-                <Text style={{ color: "grey", fontSize: 13, marginTop: 2 }}>
-                  #/UnitOfMeasure
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: "20%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 18 }}>{item.quantity}</Text>
-              </View>
-            </View>
-          )}
-        />
+        {shoppingList ? (
+          <FlatList
+            data={shoppingList}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              // <View>
+              //   <View style={styles.listItemContainer}>
+              //     <Image source={{ uri: item.image }} style={styles.image} />
+              //     <View style={styles.textContainer}>
+              //       <Text>{item.name}</Text>
+              //       <Text>Quantity: {item.quantity}</Text>
+              //       <Text>Price: R{item.price.toFixed(2)}</Text>
+              //     </View>
+              //     <Button
+              //       title="Remove"
+              //       onPress={() => handleRemoveItem(item.id)}
+              //     />
+              //   </View>
+              // </View>
+              <Swipeable renderRightActions={RightActions}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 80,
+                    backgroundColor: "whitesmoke",
+                    padding: 5,
+                    marginBottom: 10,
+                    borderRadius: 8,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    source={{ uri: item.image }}
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      // backgroundColor: "tomato",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 8,
+                      resizeMode: "cover",
+                    }}
+                  />
+                  <View
+                    style={{
+                      width: "60%",
+                      height: "100%",
+                      // backgroundColor: "yellow",
+                      padding: 5,
+                      justifyContent: "center",
+                      // alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      R {item.price.toFixed(2)}
+                    </Text>
+                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                      {item.name}
+                    </Text>
+                    <Text style={{ color: "grey", fontSize: 13, marginTop: 2 }}>
+                      #/UnitOfMeasure
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 18 }}>{item.quantity}</Text>
+                  </View>
+                </View>
+              </Swipeable>
+            )}
+          />
+        ) : (
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              height: 80,
+              backgroundColor: "#5F6F52",
+              padding: 5,
+              marginBottom: 10,
+              borderRadius: 8,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={toggleModal}
+          >
+            {/* <Image
+                    source={{ uri: item.image }}
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      // backgroundColor: "tomato",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 8,
+                      resizeMode: "cover",
+                    }}
+                  />
+                  <View
+                    style={{
+                      width: "60%",
+                      height: "100%",
+                      // backgroundColor: "yellow",
+                      padding: 5,
+                      justifyContent: "center",
+                      // alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      R {item.price.toFixed(2)}
+                    </Text>
+                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                      {item.name}
+                    </Text>
+                    <Text style={{ color: "grey", fontSize: 13, marginTop: 2 }}>
+                      #/UnitOfMeasure
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 18 }}>{item.quantity}</Text>
+                  </View> */}
+            {/* <Text>Nothing to display</Text> */}
+            <Icon name="add" color="whitesmoke" />
+          </TouchableOpacity>
+        )}
+
         {/* </ScrollView> */}
         <Pressable
           onPress={toggleModal}
           style={{
             width: 60,
             height: 60,
-            backgroundColor: "tomato",
+            backgroundColor: "#5F6F52",
             position: "absolute",
             bottom: 10,
             right: 10,
@@ -331,8 +428,10 @@ function ItemListScreen() {
         >
           <Icon name="add" color="whitesmoke" />
         </Pressable>
-        <Modal isVisible={isModalVisible}>
-          <ItemForm toggleModal={toggleModal} />
+        <Modal isVisible={isModalVisible} style={{ borderRadius: 8 }}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <ItemForm toggleModal={toggleModal} />
+          </ScrollView>
         </Modal>
       </View>
     </SafeAreaView>

@@ -15,10 +15,13 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../Redux/reducers";
 import add from "../assets/add.jpg";
 import * as ImagePicker from "expo-image-picker";
+import { Icon } from "@rneui/themed";
+import { Pressable } from "react-native";
 
 function ItemForm({ toggleModal }) {
   const [itemName, setItemName] = useState("");
   const [storeName, setStoreName] = useState("");
+  const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("1");
@@ -27,7 +30,8 @@ function ItemForm({ toggleModal }) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
         alert("Permission to access the image library is required.");
       }
@@ -48,6 +52,7 @@ function ItemForm({ toggleModal }) {
       id: Date.now().toString(),
       name: itemName,
       store: storeName,
+      category: category,
       image,
       price: parseFloat(price),
       quantity: parseInt(quantity),
@@ -56,6 +61,7 @@ function ItemForm({ toggleModal }) {
     dispatch(addItem(newItem));
     setItemName("");
     setStoreName("");
+    setCategory("");
     setImage("");
     setPrice("");
     setQuantity("1");
@@ -82,17 +88,41 @@ function ItemForm({ toggleModal }) {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.formContainer}
+      contentContainerStyle={[styles.formContainer, { paddingHorizontal: 5 }]}
       onScroll={handleScroll}
       style={styles.modalBackground}
     >
-      <View style={styles.header}>
-        <Text style={{ fontSize: 30, textAlign: "center" }}>Add Item</Text>
-        <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>X</Text>
-        </TouchableOpacity>
+      <View
+        style={
+          ([styles.header],
+          {
+            // backgroundColor: "red",
+            width: "100%",
+            marginBottom: 5,
+            paddingVertical: 10,
+            alignItems: "center",
+          })
+        }
+      >
+        <Text style={{ color: "gray", fontSize: 18 }}>Add Item</Text>
       </View>
-      <Image source={add} style={styles.image} />
+      <TouchableOpacity
+        style={[
+          styles.image,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+        onPress={selectImage}
+      >
+        {image ? (
+          <Image
+            source={{ uri: image }}
+            //  style={styles.imagePreview}
+            style={{ width: "100%", height: "100%", resizeMode: "center" }}
+          />
+        ) : (
+          <Icon name="image" color="gray" selectable={true} />
+        )}
+      </TouchableOpacity>
 
       <TextInput
         style={styles.input}
@@ -110,6 +140,13 @@ function ItemForm({ toggleModal }) {
       />
       <TextInput
         style={styles.input}
+        placeholder="Item Category"
+        placeholderTextColor="#888"
+        value={category}
+        onChangeText={(text) => setStoreName(text)}
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Price"
         placeholderTextColor="#888"
         value={price}
@@ -117,22 +154,60 @@ function ItemForm({ toggleModal }) {
         keyboardType="numeric"
       />
       <TextInput
-        style={styles.quantityInput}
+        style={styles.input}
         placeholder="Quantity"
         value={quantity}
         onChangeText={(text) => setQuantity(text)}
         keyboardType="numeric"
       />
-      <Text style={{ marginVertical: 15 }}>
-        {image ? <Image source={{ uri: image }} style={styles.imagePreview} /> : null} Total Price: R{calculateTotalPrice()}
+      <Text style={{ marginVertical: 30 }}>
+        Total Price: R{calculateTotalPrice()}
       </Text>
-      <TouchableOpacity onPress={selectImage} style={styles.uploadButton}>
-        <Text style={styles.uploadButtonText}>Upload Image</Text>
+      <TouchableOpacity
+        onPress={handleAddItem}
+        style={{
+          backgroundColor: "#5F6F52",
+          width: "98%",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingVertical: 10,
+          marginBottom: 20,
+          borderRadius: 8,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "Poppins",
+            color: "whitesmoke",
+            fontWeight: "bold",
+            fontSize: 16,
+          }}
+        >
+          Add
+        </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity onPress={handleAddItem} style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add</Text>
-      </TouchableOpacity>
+      <Pressable
+        onPress={toggleModal}
+        style={{
+          backgroundColor: "tomato",
+          width: "98%",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingVertical: 10,
+          borderRadius: 8,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "Poppins",
+            color: "whitesmoke",
+            fontWeight: "bold",
+            fontSize: 16,
+          }}
+        >
+          Close
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -142,9 +217,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexGrow: 1,
     marginTop: 35,
+    flex: 1,
+    paddingVertical: 5,
   },
   modalBackground: {
     backgroundColor: "#fff",
+    borderRadius: 18,
   },
   header: {
     flexDirection: "row",
@@ -157,7 +235,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     fontSize: 24,
-    color: "red",
+    color: "tomato",
   },
   input: {
     height: 40,
@@ -166,37 +244,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 8,
     backgroundColor: "#fff",
-    width: "80%",
-  },
-  quantityInput: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    padding: 8,
-    backgroundColor: "#fff",
-    width: "80%",
-  },
-  uploadButton: {
-    height: 30,
-    width: "80%",
-    backgroundColor: "red",
-    justifyContent: "center",
-    alignItems: "center",
+    width: "98%",
+    borderRadius: 8,
   },
   uploadButtonText: {
     textAlign: "center",
     color: "#fff",
     fontSize: 26,
-  },
-  addButton: {
-    height: 30,
-    width: "80%",
-    backgroundColor: "red",
-    marginTop: 10,
-    marginBottom: 50, // Added margin to push the "Add" button up
-    justifyContent: "center",
-    alignItems: "center",
   },
   addButtonText: {
     textAlign: "center",
@@ -204,8 +258,12 @@ const styles = StyleSheet.create({
     fontSize: 26,
   },
   image: {
-    height: 200, // Adjusted the height
+    height: 250, // Adjusted the height
     width: "100%",
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 8,
   },
   imagePreview: {
     width: 80,
